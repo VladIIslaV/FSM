@@ -1,35 +1,54 @@
 #pragma once
-
 #include <iostream>
 
 using namespace std;
 
-
-typedef uint32_t FsmState_t;
 typedef uint32_t FsmEvent_t;
 typedef uint32_t FsmQueue_t;
+typedef uint32_t FsmState_t;
 
-typedef void(*FsmEventHandlerFptr_t)(FsmEvent_t, void*);
+typedef void(*FsmEventHandlerFptr_t)(void);
 
-typedef struct Fsm_t
-{
-	// Common fields - for both Array and Switch based FSMs
-	FsmState_t				currentState;
-	FsmQueue_t*             pQueue;
-	FsmEventHandlerFptr_t   pfHandler;
-} Fsm_t;
-
-
-class Fsm
-{
-	Fsm_t fsm;
-
-public:
-	void Initialize(FsmQueue_t* pQueue = NULL, FsmEventHandlerFptr_t pfHandler = NULL);
-	void InitializeMap();
-	void SetState(FsmState_t newState);
-	void SendEvent();
-	void FsmStep();
-	virtual void ProcessEvent() = 0;
+struct S {
+	int i;
 };
 
+template<typename State_t, typename Event_t, typename Action_t, int cStateNumber, int cEventNumber>
+struct FsmEntry_t
+{
+	State_t state;
+	Event_t event;
+	State_t target;
+	Action_t action;
+};
+
+template<typename State_t, typename Event_t, typename Action_t, int cStateNumber, int cEventNumber>
+class Fsm
+{
+	const FsmEntry_t<State_t, Event_t, Action_t, cStateNumber, cEventNumber>	cMap[cStateNumber][cEventNumber];
+	State_t curState;
+public:
+	Fsm();
+	Fsm(const FsmEntry_t<State_t, Event_t, Action_t, cStateNumber, cEventNumber> *conditionsMap[]);
+	void Initialize(const FsmEntry_t<State_t, Event_t, Action_t, cStateNumber, cEventNumber> *conditionsMap[]);
+	//void Initialize(FsmQueue_t* pQueue = NULL, FsmEventHandlerFptr_t pfHandler = NULL);
+	
+	void SetState(State_t newState);
+	State_t GetState() const;
+	//void SendEvent();
+	//void FsmStep();
+
+	void ProcessEvent();
+	//int operator()(Event_t event);
+
+};
+
+template<typename T>
+class C {
+	T t;
+public:
+	C();
+	C(T t1);
+};
+
+//C<int> c1(1);
