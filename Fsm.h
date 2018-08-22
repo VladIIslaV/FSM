@@ -4,32 +4,68 @@
 
 using namespace std;
 
-
-typedef uint32_t FsmState_t;
-typedef uint32_t FsmEvent_t;
-typedef uint32_t FsmQueue_t;
-
-typedef void(*FsmEventHandlerFptr_t)(FsmEvent_t, void*);
-
-typedef struct Fsm_t
+template<typename State_t, typename Event_t, typename Action_t, int cStateNumber, int cEventNumber>
+struct FsmEntry_t
 {
-	// Common fields - for both Array and Switch based FSMs
-	FsmState_t				currentState;
-	FsmQueue_t*             pQueue;
-	FsmEventHandlerFptr_t   pfHandler;
-} Fsm_t;
+	State_t state;
+	Event_t event;
+	State_t target;
+	Action_t action;
+};
 
-
+template<typename State_t, typename Event_t, typename Action_t, int cStateNumber, int cEventNumber>
 class Fsm
 {
-	Fsm_t fsm;
-
+	FsmEntry_t<State_t, Event_t, Action_t, cStateNumber, cEventNumber>	*cMap;
+	State_t curState;
 public:
-	void Initialize(FsmQueue_t* pQueue = NULL, FsmEventHandlerFptr_t pfHandler = NULL);
-	void InitializeMap();
-	void SetState(FsmState_t newState);
-	void SendEvent();
-	void FsmStep();
-	virtual void ProcessEvent() = 0;
+	Fsm();
+	Fsm(FsmEntry_t<State_t, Event_t, Action_t, cStateNumber, cEventNumber> *);
+	
+	void SetState(State_t newState);
+	State_t GetState() const;
+	//void SendEvent();
+	//void FsmStep();
+
+	void ProcessEvent(Event_t);
+	//int operator()(Event_t event);
 };
+
+template<typename State_t, typename Event_t, typename Action_t, int cStateNumber, int cEventNumber>
+inline Fsm<State_t, Event_t, Action_t, cStateNumber, cEventNumber>::Fsm()
+{
+}
+
+template<typename State_t, typename Event_t, typename Action_t, int cStateNumber, int cEventNumber>
+inline Fsm<State_t, Event_t, Action_t, cStateNumber, cEventNumber>::Fsm(FsmEntry_t<State_t, Event_t, Action_t, cStateNumber, cEventNumber> *map) :
+	cMap(map),
+	curState(State_t(0))
+{
+}
+
+template<typename State_t, typename Event_t, typename Action_t, int cStateNumber, int cEventNumber>
+inline void Fsm<State_t, Event_t, Action_t, cStateNumber, cEventNumber>::SetState(State_t newState)
+{
+	curState = newState;
+}
+
+template<typename State_t, typename Event_t, typename Action_t, int cStateNumber, int cEventNumber>
+inline State_t Fsm<State_t, Event_t, Action_t, cStateNumber, cEventNumber>::GetState() const
+{
+	return State_t();
+}
+
+template<typename State_t, typename Event_t, typename Action_t, int cStateNumber, int cEventNumber>
+inline void Fsm<State_t, Event_t, Action_t, cStateNumber, cEventNumber>::ProcessEvent(Event_t newEvent)
+{
+	int conditionsNumber = cStateNumber * cEventNumber;
+	for (int i = 0; i < conditionsNumber; i++)
+	{
+		if (cMap[i].state == curState && cMap[i].event == newEvent)
+		{
+			cout << "I found it" << endl;
+			cMap[i].action();
+		}
+	}
+}
 
