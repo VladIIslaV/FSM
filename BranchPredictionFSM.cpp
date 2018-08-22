@@ -1,7 +1,8 @@
 #include "BranchPredictionFSM.h"
 
-void fun1() {}
-void fun2() {}
+
+void fun1() { cout << "fun1" << endl; }
+void fun2() { cout << "fun2" << endl; }
 
 /*FsmEntry_t<eState_t, eEvent_t, fpAction_t, cNumOfStates, cNumOfEvents> cBranchPredictionsConditionMap[cNumOfStates][cNumOfEvents] =
 {
