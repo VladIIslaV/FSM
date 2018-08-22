@@ -25,8 +25,7 @@ typedef void(*fpAction_t)(void);
 void fun1();
 void fun2();
 
-
-static const FsmEntry_t<eState_t, eEvent_t, fpAction_t, cNumOfStates, cNumOfEvents> cBranchPredictionsConditionMap[] = 
+static FsmEntry_t<eState_t, eEvent_t, fpAction_t, cNumOfStates, cNumOfEvents> cBranchPredictionsConditionMap[] = 
 { 
 	{ eState_t::state1, eEvent_t::event1, eState_t::state2, fun2 }, 
 	{ eState_t::state1, eEvent_t::event2, eState_t::state1, fun1 },
@@ -34,5 +33,3 @@ static const FsmEntry_t<eState_t, eEvent_t, fpAction_t, cNumOfStates, cNumOfEven
 	{ eState_t::state2, eEvent_t::event1, eState_t::state1, fun1 },
 	{ eState_t::state2, eEvent_t::event2, eState_t::state2, fun2 }
 };
-
-//

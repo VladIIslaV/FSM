@@ -29,7 +29,7 @@ class Fsm
 	State_t curState;
 public:
 	Fsm();
-	Fsm(const FsmEntry_t<State_t, Event_t, Action_t, cStateNumber, cEventNumber> *conditionsMap[]);
+	Fsm(FsmEntry_t<State_t, Event_t, Action_t, cStateNumber, cEventNumber> *);
 	void Initialize(const FsmEntry_t<State_t, Event_t, Action_t, cStateNumber, cEventNumber> *conditionsMap[]);
 	//void Initialize(FsmQueue_t* pQueue = NULL, FsmEventHandlerFptr_t pfHandler = NULL);
 	
@@ -42,13 +42,3 @@ public:
 	//int operator()(Event_t event);
 
 };
-
-template<typename T>
-class C {
-	T t;
-public:
-	C();
-	C(T t1);
-};
-
-//C<int> c1(1);

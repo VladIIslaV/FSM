@@ -35,7 +35,7 @@ Fsm<State_t, Event_t, Action_t, cStateNumber, cEventNumber>::Fsm()
 }
 
 template<typename State_t, typename Event_t, typename Action_t, int cStateNumber, int cEventNumber>
-Fsm<State_t, Event_t, Action_t, cStateNumber, cEventNumber>::Fsm(const FsmEntry_t<State_t, Event_t, Action_t, cStateNumber, cEventNumber>* conditionsMap[])
+Fsm<State_t, Event_t, Action_t, cStateNumber, cEventNumber>::Fsm(FsmEntry_t<State_t, Event_t, Action_t, cStateNumber, cEventNumber>*)
 {
 }
 
