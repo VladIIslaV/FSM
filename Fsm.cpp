@@ -29,15 +29,7 @@ void Fsm<State_t, Event_t, Action_t, cStateNumber, cEventNumber>::Initialize(Fsm
 }*/
 
 
-template<typename State_t, typename Event_t, typename Action_t, int cStateNumber, int cEventNumber>
-Fsm<State_t, Event_t, Action_t, cStateNumber, cEventNumber>::Fsm()
-{
-}
 
-template<typename State_t, typename Event_t, typename Action_t, int cStateNumber, int cEventNumber>
-Fsm<State_t, Event_t, Action_t, cStateNumber, cEventNumber>::Fsm(FsmEntry_t<State_t, Event_t, Action_t, cStateNumber, cEventNumber>*)
-{
-}
 
 template<typename State_t, typename Event_t, typename Action_t, int cStateNumber, int cEventNumber>
 void Fsm<State_t, Event_t, Action_t, cStateNumber, cEventNumber>::Initialize(const FsmEntry_t<State_t, Event_t, Action_t, cStateNumber, cEventNumber> *conditionsMap[])
