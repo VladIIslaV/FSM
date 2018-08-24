@@ -41,7 +41,8 @@ public:
 	Action_t operator()(Event_t);	// make the same thing as ProcessEvent method
 
 	Action_t Run();
-	// Describe RUN function. It is neccessary becouse I want to set any state and run machine from that state.
+
+	void ShowEvents();
 };
 
 /*
@@ -139,5 +140,19 @@ inline Action_t Fsm<State_t, Event_t, Action_t>::Run()
 		cout << "Action == nullptr" << endl;
 	}
 	return action;
+}
+
+template<typename State_t, typename Event_t, typename Action_t>
+inline void Fsm<State_t, Event_t, Action_t>::ShowEvents()
+{
+	cout << "Options:\t";
+	for (int i = 0; i < fsmEntiesNumber; i++)
+	{
+		if (cMap[i].state == curState)
+		{
+			cout << (char*)(&cMap[i].event) << " / ";
+		}
+	}
+	cout << endl;
 }
 

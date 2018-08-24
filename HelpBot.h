@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Fsm.h"
+
 namespace Bot 
 {
 	enum class State
@@ -21,15 +22,14 @@ namespace Bot
 
 	const int cNumOfStates = static_cast<int>(State::cNumOfStates);
 
-	enum class Event
+	enum class Event : int
 	{
-		cRunFSM = 0,	// single use event
-		cNo,
-		cYes,
-		cOne,
+		cNo = 'on',
+		cYes = 'sey',
+		cOne = '1',
 		cTwo,
 		cThree,
-		cOk,
+		cOk = 'ko',
 
 		// Do not add anything below
 		cNumOfEvents
@@ -66,7 +66,8 @@ namespace Bot
 
 		{ State::cJokePoint,		Event::cOk,		State::cCallMe,			CallMeAction		},
 
-		{ State::cGoHome,			Event::cOk,		State::cGoodNews,		GoodNewsAction		},
+		{ State::cGoHome,			Event::cYes,	State::cGoodNews,		GoodNewsAction		},
+		{ State::cGoHome,			Event::cNo,		State::cGoodNews,		GoodNewsAction		},
 
 		{ State::cGoodbye,			Event::cOk,		State::cCallMe,			CallMeAction		},
 
