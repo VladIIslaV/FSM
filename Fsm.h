@@ -5,163 +5,163 @@
 using namespace std;
 
 /*
-	FsmEntry_t type describe one FSM condition:
-		- STATE from you are starting
-		- EVENT which help you jump to the TARGET state
-		- TARGET - result state
-		- ACTION - function pointer which have to be executed after FSM step
+    FsmEntry_t type describe one FSM condition:
+        - STATE from you are starting
+        - EVENT which help you jump to the TARGET state
+        - TARGET - result state
+        - ACTION - function pointer which have to be executed after FSM step
 */
 template<typename State_t, typename Event_t, typename Action_t>
 struct FsmEntry_t
 {
-	State_t state;
-	Event_t event;
-	State_t target;
-	Action_t action;
+    State_t state;
+    Event_t event;
+    State_t target;
+    Action_t action;
 };
 
 /*
-	Template FSM class. It made to create and use Finit State Machines.
+    Template FSM class. It made to create and use Finit State Machines.
 */
 template<typename State_t, typename Event_t, typename Action_t>
 class Fsm
 {
-	FsmEntry_t<State_t, Event_t, Action_t>	*cMap;
-	State_t curState;
-	int fsmEntiesNumber;
+    FsmEntry_t<State_t, Event_t, Action_t>    *cMap;
+    State_t curState;
+    int fsmEntiesNumber;
 public:
-	Fsm();
-	Fsm(FsmEntry_t<State_t, Event_t, Action_t> *, int);
-	void Initialize(FsmEntry_t<State_t, Event_t, Action_t> *, int);
+    Fsm();
+    Fsm(FsmEntry_t<State_t, Event_t, Action_t> *, int);
+    void Initialize(FsmEntry_t<State_t, Event_t, Action_t> *, int);
 
-	void SetState(State_t newState);
-	State_t GetState() const;
+    void SetState(State_t newState);
+    State_t GetState() const;
 
-	Action_t ProcessEvent(Event_t);
-	Action_t operator()(Event_t);	// make the same thing as ProcessEvent method
+    Action_t ProcessEvent(Event_t);
+    Action_t operator()(Event_t);    // make the same thing as ProcessEvent method
 
-	Action_t Run();
+    Action_t Run();
 
-	void ShowEvents();
+    void ShowEvents();
 };
 
 /*
-	Default constructor.
+    Default constructor.
 */
 template<typename State_t, typename Event_t, typename Action_t>
 inline Fsm<State_t, Event_t, Action_t>::Fsm() :
-	curState(State_t(0))
+    curState(State_t(0))
 {
 }
 
 /*
-	Override of the constructior. Includes functionality of the Initialize function.
+    Override of the constructior. Includes functionality of the Initialize function.
 */
 template<typename State_t, typename Event_t, typename Action_t>
 inline Fsm<State_t, Event_t, Action_t>::Fsm(FsmEntry_t<State_t, Event_t, Action_t> *map, int mapSize) :
-	cMap(map),
-	curState(State_t(0)),
-	fsmEntiesNumber(mapSize)
+    cMap(map),
+    curState(State_t(0)),
+    fsmEntiesNumber(mapSize)
 {
 }
 
 /*
-	Function with the same functionality as Fsm constructor
+    Function with the same functionality as Fsm constructor
 */
 template<typename State_t, typename Event_t, typename Action_t>
 inline void Fsm<State_t, Event_t, Action_t>::Initialize(FsmEntry_t<State_t, Event_t, Action_t>* map, int mapSize)
 {
-	cMap = map;
-	curState = State_t(0);
-	fsmEntiesNumber = mapSize;
+    cMap = map;
+    curState = State_t(0);
+    fsmEntiesNumber = mapSize;
 }
 
 /*
-	Set current state. Can be used to change start point or to skip any step in the state machine "route".
+    Set current state. Can be used to change start point or to skip any step in the state machine "route".
 */
 template<typename State_t, typename Event_t, typename Action_t>
 inline void Fsm<State_t, Event_t, Action_t>::SetState(State_t newState)
 {
-	curState = newState;
+    curState = newState;
 }
 
 /*
-	Get current state.
+    Get current state.
 */
 template<typename State_t, typename Event_t, typename Action_t>
 inline State_t Fsm<State_t, Event_t, Action_t>::GetState() const
 {
-	return State_t();
+    return State_t();
 }
 
 /*
-	This function get Event in argumet list and make a step based on these info.
-	It looks like	CurrentState + Event = NewEvent(run NewEvent action and reset CurrentState)
+    This function get Event in argumet list and make a step based on these info.
+    It looks like    CurrentState + Event = NewEvent(run NewEvent action and reset CurrentState)
 */
 template<typename State_t, typename Event_t, typename Action_t>
 inline Action_t Fsm<State_t, Event_t, Action_t>::ProcessEvent(Event_t newEvent)
 {
-	Action_t action = nullptr;
-	for (int i = 0; i < fsmEntiesNumber && action == nullptr; i++)
-	{
-		if (cMap[i].state == curState && cMap[i].event == newEvent)
-		{
-			action = cMap[i].action;
-			cMap[i].action();
-			curState = cMap[i].target;
-		}
-	}
-	return action;
+    Action_t action = nullptr;
+    for (int i = 0; i < fsmEntiesNumber && action == nullptr; i++)
+    {
+        if (cMap[i].state == curState && cMap[i].event == newEvent)
+        {
+            action = cMap[i].action;
+            cMap[i].action();
+            curState = cMap[i].target;
+        }
+    }
+    return action;
 }
 
 /*
-	The same as ProcessEvent function but with another notation.
-	
-	Made to investigate which way of use is better.
+    The same as ProcessEvent function but with another notation.
+    
+    Made to investigate which way of use is better.
 */
 template<typename State_t, typename Event_t, typename Action_t>
 inline Action_t Fsm<State_t, Event_t, Action_t>::operator()(Event_t newEvent)
 {
-	return ProcessEvent(newEvent);
+    return ProcessEvent(newEvent);
 }
 
 /*
-	Runs the action with connected with current state.
+    Runs the action with connected with current state.
 */
 template<typename State_t, typename Event_t, typename Action_t>
 inline Action_t Fsm<State_t, Event_t, Action_t>::Run()
 {
-	Action_t action = nullptr;
-	for (int i = 0; i < fsmEntiesNumber && action == nullptr; i++)
-	{
-		if (cMap[i].target == curState)
-		{
-			action = cMap[i].action;
-			cMap[i].action();
-			curState = cMap[i].target;
-		}
-	}
-	if (action == nullptr) 
-	{
-		cout << "Action == nullptr" << endl;
-	}
-	return action;
+    Action_t action = nullptr;
+    for (int i = 0; i < fsmEntiesNumber && action == nullptr; i++)
+    {
+        if (cMap[i].target == curState)
+        {
+            action = cMap[i].action;
+            cMap[i].action();
+            curState = cMap[i].target;
+        }
+    }
+    if (action == nullptr) 
+    {
+        cout << "Action == nullptr" << endl;
+    }
+    return action;
 }
 
 /*
-	Show events that can be uses to change state.
+    Show events that can be uses to change state.
 */
 template<typename State_t, typename Event_t, typename Action_t>
 inline void Fsm<State_t, Event_t, Action_t>::ShowEvents()
 {
-	cout << "Options:\t";
-	for (int i = 0; i < fsmEntiesNumber; i++)
-	{
-		if (cMap[i].state == curState)
-		{
-			cout << (char*)(&cMap[i].event) << " / ";
-		}
-	}
-	cout << endl;
+    cout << "Options:\t";
+    for (int i = 0; i < fsmEntiesNumber; i++)
+    {
+        if (cMap[i].state == curState)
+        {
+            cout << (char*)(&cMap[i].event) << " / ";
+        }
+    }
+    cout << endl;
 }
 
