@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Fsm.h"
+#include "../Fsm.h"
 
 namespace Bot 
 {
@@ -31,7 +31,7 @@ namespace Bot
 		cThree,
 		cOk = 'ko',
 
-		// Do not add anything below
+		/// Do not add anything below
 		cNumOfEvents
 	};
 
@@ -76,5 +76,4 @@ namespace Bot
 		{ State::cCallMe,			Event::cYes,	State::cIntroduction,	IntroductionAction	},
 		{ State::cCallMe,			Event::cNo,		State::cCallMe,			CallMeAction		},
 	};
-
 }

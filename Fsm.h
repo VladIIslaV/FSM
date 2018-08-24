@@ -21,14 +21,14 @@ struct FsmEntry_t
 };
 
 /*
-	Template FSM class. It made to create and use diffrent FSMs.
+	Template FSM class. It made to create and use Finit State Machines.
 */
 template<typename State_t, typename Event_t, typename Action_t>
 class Fsm
 {
 	FsmEntry_t<State_t, Event_t, Action_t>	*cMap;
-	int fsmEntiesNumber;
 	State_t curState;
+	int fsmEntiesNumber;
 public:
 	Fsm();
 	Fsm(FsmEntry_t<State_t, Event_t, Action_t> *, int);
@@ -65,6 +65,9 @@ inline Fsm<State_t, Event_t, Action_t>::Fsm(FsmEntry_t<State_t, Event_t, Action_
 {
 }
 
+/*
+	Function with the same functionality as Fsm constructor
+*/
 template<typename State_t, typename Event_t, typename Action_t>
 inline void Fsm<State_t, Event_t, Action_t>::Initialize(FsmEntry_t<State_t, Event_t, Action_t>* map, int mapSize)
 {
@@ -122,6 +125,9 @@ inline Action_t Fsm<State_t, Event_t, Action_t>::operator()(Event_t newEvent)
 	return ProcessEvent(newEvent);
 }
 
+/*
+	Runs the action with connected with current state.
+*/
 template<typename State_t, typename Event_t, typename Action_t>
 inline Action_t Fsm<State_t, Event_t, Action_t>::Run()
 {
@@ -142,6 +148,9 @@ inline Action_t Fsm<State_t, Event_t, Action_t>::Run()
 	return action;
 }
 
+/*
+	Show events that can be uses to change state.
+*/
 template<typename State_t, typename Event_t, typename Action_t>
 inline void Fsm<State_t, Event_t, Action_t>::ShowEvents()
 {

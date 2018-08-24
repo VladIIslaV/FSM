@@ -1,7 +1,5 @@
-#include <vector>
 #include <iostream>
-#include "BranchPredictionFSM.h"
-#include "HelpBot.h"
+#include "Examples/HelpBot.h"
 		  
 using namespace std;
 
